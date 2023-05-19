@@ -61,8 +61,10 @@ headers = {
 
 ahrq_repos_url = "https://api.github.com/users/HHS-AHRQ/repos"
 
-all_repos = requests.get(ahrq_repos_url, headers = headers).json()
+resp = requests.get(ahrq_repos_url, headers = headers)
+print(resp)
 
+all_repos = resp.json()
 
 user = "HHS-AHRQ"
 
@@ -83,7 +85,8 @@ for repo in meps_repos:
   
   # Make request
   r = requests.get(traffic_views, headers = headers)
-  
+  print(r)
+      
   # Convert to pandas dataframe
   traffic_df = pd.DataFrame(r.json()['views'])
   
