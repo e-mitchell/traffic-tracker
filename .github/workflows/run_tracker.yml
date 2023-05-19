@@ -31,6 +31,8 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run Python script
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: python github_api_traffic.py
 
       - name: Commit changes
