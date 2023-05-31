@@ -91,7 +91,7 @@ for repo in meps_repos:
   traffic_df = pd.DataFrame(r.json()['views'])
   
   # output to csv
-  traffic_df.to_csv(f"traffic_reports/traffic_{repo}_{date.today()}.csv", index = False)
+  traffic_df.to_csv(f"traffic_reports/{repo}/traffic_{repo}_{date.today()}.csv", index = False)
 
 
 
