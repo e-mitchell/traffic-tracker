@@ -4,7 +4,7 @@ name: traffic tracker
 
 # Controls when the workflow will run
 on:
-  # run every day at 6pm
+  # run every day at 6am UTC time (2am EST)
   schedule:
     - cron: "0 6 * * *"
 
