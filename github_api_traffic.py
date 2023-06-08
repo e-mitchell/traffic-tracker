@@ -22,13 +22,18 @@ import requests
 # Get a Personal Access Token from GitHub -------------------------------------
 # Steps (as of 2/1/23):
 #   https://github.com/settings/developers
-#   > GitHub Developer Settings > Personal access tokens (classic) 
-#     Generate new token (classic)
+#   > GitHub Developer Settings 
+#   > Personal access tokens (classic) 
+#   > Generate new token (classic)
 #      1. Add note (e.g. python_meps)
 #      2. Set expiration (github will email when it's almost expired)
 #      3. check 'repo' box
 #      4. Generate token
 
+
+# PRO TIP: If this code is in a public repo, don't paste the token here! Save it 
+# as a 'secret' in GitHub repo (under 'settings'), then refer to it using the 
+# 'os.getenv' function
 
 
 token = os.getenv("GH_TOKEN") # get secret token 
@@ -42,58 +47,40 @@ headers = {
   }
 
 
-# Examples --------------------------------------------------------------------
-#
-# # Example 1: get general info on e-mitchell
-# em_url = "https://api.github.com/users/e-mitchell"
-# em_info = requests.get(em_url, headers = headers).json()
-# 
-# 
-# # Example 2: Get general info on e-mitchell's repos
-# em_repo_url = "https://api.github.com/users/e-mitchell/repos"
-# em_repos = requests.get(em_repo_url, headers = headers).json()
-
-
 # Get traffic data for AHRQ repositories -------------------------------------
-
-# first, need to loop to get all repositories
-# [add looping code here]
 
 ahrq_repos_url = "https://api.github.com/users/HHS-AHRQ/repos"
 
-resp = requests.get(ahrq_repos_url, headers = headers)
-print(resp)
-
-all_repos = resp.json()
+# API query to get info for all HHS-AHRQ repositories
+meps_repos = requests.get(ahrq_repos_url, headers = headers).json()
 
 user = "HHS-AHRQ"
 
-meps_repos = [
-  "MEPS",
-  "MEPS-workshop",
-  "MEPS-summary-tables",
-  "MEPS-linking-webinar-1",
-  "MEPS-linking-webinar-2"]
 
-
+# Loop through repositories
 for repo in meps_repos:
-  print(repo)
-
-  # Then, pull traffic views from each repo and output to a csv file
   
-  traffic_views = f"https://api.github.com/repos/{user}/{repo}/traffic/views"
+  repo_name = repo['name']
+  #print(repo_name)
+  
+  # Pull traffic views from each repo 
+  traffic_views = f"https://api.github.com/repos/{user}/{repo_name}/traffic/views"
   
   # Make request
   r = requests.get(traffic_views, headers = headers)
-  print(r)
-      
+  #pprint(r.json()['views'])
+  
   # Convert to pandas dataframe
   traffic_df = pd.DataFrame(r.json()['views'])
   
-  # output to csv
-  traffic_df.to_csv(f"traffic_reports/{repo}/traffic_{repo}_{date.today()}.csv", index = False)
-
-
-
+  # Output to csv 
+  #  > first create directory for storing traffic reports if it doesn't exist
+  
+  repo_dir = f"traffic_reports/{repo_name}"
+  
+  if not os.path.exists(repo_dir):
+    os.mkdir(repo_dir)
+  
+  traffic_df.to_csv(f"traffic_reports/{repo_name}/traffic_{repo_name}_{date.today()}.csv", index = False)
 
 
