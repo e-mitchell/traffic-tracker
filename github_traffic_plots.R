@@ -7,18 +7,17 @@
 #  - consolidate to de-duplicate information
 #  - make some nice graphs!
 # -----------------------------------------------------------------------------
+# setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
 library(dplyr)
 library(stringr)
 library(lubridate)
 library(ggplot2)
 
-
 # pick repository to view
-repo_name = "MEPS"
-repo_name = "MEPS-workshop"
 
-#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+repo_name = "MEPS"
+#repo_name = "MEPS-workshop"
 
 
 # pull and combine reports ----------------------------------------------------
@@ -52,7 +51,7 @@ all_traffic = bind_rows(traffic_list) %>%
   # since counts may not represent full days
   filter(days_between > 0 & days_between < 14)
 
-
+# De-depulicate rows
 all_traffic_unique = all_traffic %>% 
   distinct(count, uniques, traffic_date)
 
@@ -66,7 +65,6 @@ ggplot(all_traffic_unique) +
   
   geom_line(aes(x = traffic_date, y = uniques), color = "#28a745", size = 1) +
   geom_point(aes(x = traffic_date, y = uniques), fill = "#28a745", shape = 21, size = 3, color = "white", stroke = 0.5) +
-  labs(x = "", y = "") +
   theme_minimal()
 
   
