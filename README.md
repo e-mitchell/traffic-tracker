@@ -25,7 +25,9 @@ To access the GitHub API, you need a personal access token. Follow these steps t
 
 ### Step 2: Write Python Code to Query the API and Output Data to CSV
 
-The Python script `github_api_traffic.py` loops through all repositories under the user 'HHS_AHRQ'. You can use it as an example to query the API for a single repository. Here's an example:
+The Python script `github_api_traffic.py` loops through all repositories under the user 'HHS_AHRQ'. You can use it as an example to query the API for a single repository. Note that the token you generate must come from an account with push access to the repository.
+
+Here's an example of the Python code:
 
 ```python
 # Your Python code here
@@ -93,11 +95,26 @@ jobs:
 
       - name: Commit changes
         run: |
-          git config --global user.email "mitcheem@gmail.com"
-          git config --global user.name "Emily Mitchell"
+          git config --global user.email "[EMAIL@DOMAIN.com]"
+          git config --global user.name "[NAME]"
           git add .
           git commit -m "Add generated CSV traffic files"
           git push
 ```
 
-### Step 4: Visualize!
+### Step 4: Visualize the Traffic Data
+
+In order to gain insights from the captured web traffic data beyond the default time frame provided by GitHub, we can visualize the data using R. The R code `github_traffic_plots.R` in this repository combines the CSV files, de-duplicates the entries, and creates line graphs using the powerful ggplot library.
+
+These line graphs provide a comprehensive view of the traffic patterns for a selected repository, allowing for a deeper understanding of the long-term impact of the repositories. The visualizations resemble the GitHub traffic graphs but cover extended periods.
+
+By visualizing the traffic data, we can identify trends, fluctuations, and patterns in user engagement over time. This can be valuable for assessing the effectiveness of our repositories, tracking the impact of our projects, and making data-driven decisions to optimize our online presence.
+
+The generated line graph for the MEPS repository, for example, provides a visual representation of its traffic history:
+
+![Line graph of MEPS repository traffic](_images/meps_repo.png)
+
+Feel free to explore and modify the R code to create customized visualizations for other repositories or adapt it to your specific needs.
+
+
+
