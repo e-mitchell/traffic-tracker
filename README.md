@@ -12,22 +12,22 @@ The code in this repository demonstrates this process for regularly store traffi
 
 To access the GitHub API, you need a personal access token. Follow these steps to generate one:
 
-1. Go to [github.com/settings/developers](https://github.com/settings/developers).
-2. Navigate to "GitHub Developer Settings".
-3. Select "Personal access tokens (classic)".
-4. Click "Generate new token (classic)".
-5. Add a note (e.g., 'python_meps').
-6. Set an expiration date (GitHub will email you when it's almost expired).
-7. Check the 'repo' box.
-8. Generate the token.
+1. Navigate to [**"GitHub Developer Settings"**](https://github.com/settings/developers).
+2. Select **"Personal access tokens (classic)".**
+3. Click **"Generate new token (classic)".**
+4. Add a note (e.g., 'python_meps').
+5. Set an expiration date (GitHub will email you when it's almost expired).
+6. Check the **"repo"** box.
+7. Click **"Generate token"**.
 
-> **PRO TIP**: If this code is in a public repo, don't paste the token in your Python code! Save it as a 'secret' in the GitHub repo (under 'Settings'), then refer to it using the `os.getenv` function.
+> **PRO TIP**: If this code is in a public repo, don't paste the token in your Python code! Save it as a 'secret' in the GitHub repo (under 'Settings' > 'Secrets and variables' > 'Actions'), then refer to it using the `os.getenv` function.
+
 
 ### Step 2: Write Python Code to Query the API and Output Data to CSV
 
 The Python script `github_api_traffic.py` loops through all repositories under the user 'HHS_AHRQ'. You can use it as an example to query the API for a single repository. Note that the token you generate must come from an account with push access to the repository.
 
-Here's an example of the Python code:
+Here's an example of Python code that queries traffic data for the 'MEPS' repository:
 
 ```python
 # Your Python code here
@@ -63,7 +63,9 @@ traffic_df.to_csv(f"traffic_reports/{repo_name}/traffic_{repo_name}_{date.today(
 
 ### Step 3: Run Code Automatically Using GitHub Actions
 
-The YAML file `.github/workflows/run_tracker.yml` contains the GitHub Actions workflow that runs the Python code every day (or week). It also tells GitHub to commit the CSV files to the repository. Here's an example:
+To run the Python code automatically using GitHub Actions, first create a new repository (like this one, called 'traffic-tracker') and commit the Python code to the repository. Create a new workflow by selection **Actions > New Workflow > set up a workflow yourself**. A new YAML file will be created in the `.github/workflows` directory. 
+
+In this repository, the YAML file `.github/workflows/run_tracker.yml` contains the GitHub Actions workflow that runs the Python code every day. It also tells GitHub to commit the CSV files to the repository. The `requirements.txt` file tells GitHub actions which Python libraries to load prior to running the Python code. Here's an example:
 
 ```yaml
 name: Traffic Tracker
@@ -102,6 +104,14 @@ jobs:
           git push
 ```
 
+
+Make sure to set the Workflow Permissions to "Read and Write". to do this: 
+1. Go to **"Settings"** in the repository
+2. Select **"Actions > General"**
+3. Scroll down to **"Workflow permissions"** and select **"Read and write permissions"**
+4. Click **"Save"**
+
+
 ### Step 4: Visualize the Traffic Data
 
 In order to gain insights from the captured web traffic data beyond the default time frame provided by GitHub, we can visualize the data using R. The R code `github_traffic_plots.R` in this repository combines the CSV files, de-duplicates the entries, and creates line graphs using the powerful ggplot library.
@@ -114,7 +124,6 @@ The generated line graph for the MEPS repository, for example, provides a visual
 
 ![Line graph of MEPS repository traffic](_images/meps_repo.png)
 
-Feel free to explore and modify the R code to create customized visualizations for other repositories or adapt it to your specific needs.
 
 
 
