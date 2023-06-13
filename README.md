@@ -114,9 +114,9 @@ Make sure to set the Workflow Permissions to "Read and Write". to do this:
 
 ### Step 4: Visualize the Traffic Data
 
-In order to gain insights from the captured web traffic data beyond the default time frame provided by GitHub, we can visualize the data using R. The R code `github_traffic_plots.R` in this repository combines the CSV files, de-duplicates the entries, and creates line graphs using the powerful ggplot library.
+In order to gain insights from the captured web traffic data beyond the default time frame provided by GitHub, we can visualize the data using R. The R code `github_traffic_plots.R` in this repository combines the CSV files, de-duplicates the entries, and creates line graphs using the ggplot library.
 
-These line graphs provide a comprehensive view of the traffic patterns for a selected repository, allowing for a deeper understanding of the long-term impact of the repositories. The visualizations resemble the GitHub traffic graphs but cover extended periods.
+These line graphs provide a comprehensive view of the traffic patterns for a selected repository, to view the long-term impact of the repositories. The visualizations resemble the GitHub traffic graphs but cover extended periods.
 
 By visualizing the traffic data, we can identify trends, fluctuations, and patterns in user engagement over time. This can be valuable for assessing the effectiveness of our repositories, tracking the impact of our projects, and making data-driven decisions to optimize our online presence.
 
